@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600;700&family=Poppins:wght@400;600;700&display=swap');
+@import './variables.scss';
 html {
   scroll-behavior: smooth;
 }
@@ -7,7 +8,8 @@ body {
   padding: 0;
   margin: 0;
   font-family: 'Poppins', sans-serif;
-  background-color: rgb(16, 16, 16);
+  background-color: rgb(36 37 38);
+
   color: rgb(243, 244, 246);
 }
 
@@ -45,10 +47,17 @@ button {
   color: inherit;
   margin: 0;
   padding: 0;
+  &:focus {
+    outline: 0;
+  }
+}
+input {
+  caret-color: #17abbf;
 }
 a {
-  color: inherit;
+  color: $primary-color;
   text-decoration: inherit;
+  cursor: pointer;
 }
 img {
   max-width: 100%;
@@ -64,4 +73,12 @@ img {
 :before {
   box-sizing: border-box;
   border: 0 solid #e5e7eb;
+}
+
+button {
+  background: transparent;
+  border: none;
+  outline: none;
+  transition: all 0.15s;
+  cursor: pointer;
 }
