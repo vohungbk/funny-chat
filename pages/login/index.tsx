@@ -6,6 +6,7 @@ import style from './Style.module.scss'
 import {
   AuthProvider,
   FacebookAuthProvider,
+  getAdditionalUserInfo,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -15,6 +16,7 @@ import Image from 'next/image'
 import AuthWrapper from '@Components/Auth/AuthWrapper'
 import { toast } from 'react-toastify'
 import Link from 'next/link'
+import { addDocument } from '../../firebase/service'
 
 const fbProvider = new FacebookAuthProvider()
 const ggProvider = new GoogleAuthProvider()
@@ -24,8 +26,17 @@ const Login: FC = () => {
   const [password, setPassword] = useState<string>('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const handleLoginThirdParty = async (provider: AuthProvider) => {
-    const { user } = await signInWithPopup(auth, provider)
-    console.log(user.getIdTokenResult())
+    const userCredential = await signInWithPopup(auth, provider)
+    const user = userCredential.user
+    if (getAdditionalUserInfo(userCredential)?.isNewUser) {
+      addDocument('users', {
+        displayName: user.displayName as string,
+        email: user.email as string,
+        photoUrl: user.photoURL as string,
+        uid: user.uid as string,
+        providerId: user.providerId as string,
+      })
+    }
   }
 
   const handleLogin = () => {
@@ -34,7 +45,15 @@ const Login: FC = () => {
       .then((userCredential) => {
         setIsSubmitting(false)
         const user = userCredential.user
-        console.log(user)
+        if (getAdditionalUserInfo(userCredential)?.isNewUser) {
+          addDocument('users', {
+            displayName: user.displayName as string,
+            email: user.email as string,
+            photoUrl: user.photoURL as string,
+            uid: user.uid as string,
+            providerId: user.providerId as string,
+          })
+        }
       })
       .catch((error) => {
         setIsSubmitting(false)
