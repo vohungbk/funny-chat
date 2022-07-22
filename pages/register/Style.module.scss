@@ -1,84 +1,37 @@
 @import '../../styles/variables.scss';
-
-.loginTab {
-  width: 100%;
-  height: 40px;
-  margin-bottom: 24px;
-  box-sizing: border-box;
-  padding: 2px 4px;
-  border-radius: 4px;
-  display: flex;
-  justify-content: space-between;
-  background-color: #263241;
-  .tab {
-    flex: 1;
-    height: 100%;
-    border-radius: 4px;
-    font-size: 14px;
-    line-height: 36px;
-    text-align: center;
-    &.active {
-      background: $primary-color;
-      color: #fff;
-    }
-  }
-}
-
 .rightContent {
   display: flex;
   flex: 1;
   flex-direction: column;
-  .boxTitle {
-    padding: 10px 0 17px;
-    font-weight: 600;
-    font-size: 20px;
-    text-align: center;
-  }
+
   .inputControl {
-    position: relative;
-    display: block;
+    &:not(:first-child) {
+      margin-top: 26px;
+    }
     width: 100%;
     .inputField {
-      position: relative;
-      width: 100%;
-      height: 54px;
-      box-sizing: border-box;
-      overflow: hidden;
       .input {
+        margin-top: 6px;
+        height: 48px;
+        line-height: 48px;
         border-radius: 3px;
         width: 100%;
-        height: 100%;
-        padding: 24px 16px 8px;
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-        line-height: 16px;
+        padding-left: 16px;
+        padding-right: 40px;
         font-size: 14px;
         color: #263241;
         background-color: #e4f7fe;
         z-index: 1;
-        border: 1px solid #d3d4d6;
-        transition: border 0.3s;
         &:focus,
         &:active {
           border-color: $primary-color;
         }
       }
-      .input:focus + label,
-      .input:-webkit-autofill + label {
-        transform: translateY(-10px) scale(0.85);
-      }
+
       .label {
-        position: absolute;
-        height: 20px;
-        line-height: 20px;
+        display: block;
         font-size: 14px;
-        color: #9aa5b5;
-        left: 16px;
-        top: 17px;
-        z-index: 2;
-        cursor: text;
-        transform-origin: top left;
-        transition: all 0.2s ease-out;
+        line-height: 20px;
       }
     }
     &.name {
@@ -113,7 +66,7 @@
       cursor: pointer;
     }
   }
-  .loginBtnSubmit {
+  .registerBtnSubmit {
     font-size: 14px;
     margin-top: 16px;
     width: 100%;

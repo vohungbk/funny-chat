@@ -1,3 +1,4 @@
+import { signOut } from 'firebase/auth'
 import { useRouter } from 'next/router'
 import React, { createContext, FC, ReactNode, useEffect, useState } from 'react'
 import { auth } from '../firebase/config'
@@ -27,6 +28,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     const unsubscibed = auth.onAuthStateChanged((user) => {
       if (user) {
         const { displayName, email, uid, photoURL } = user
+        signOut(auth)
         setUser({
           displayName,
           email,
@@ -38,10 +40,11 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       }
 
       setUser({})
-      router.push('/login')
+      router.push(
+        window.location.pathname === '/register' ? '/register' : '/login'
+      )
     })
 
-    // clean function
     return () => {
       unsubscibed()
     }

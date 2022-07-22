@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app'
-import { getFirestore } from 'firebase/firestore'
+import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore'
 import firebase from 'firebase/app'
-import { getAuth, GoogleAuthProvider } from 'firebase/auth'
+import { connectAuthEmulator, getAuth, GoogleAuthProvider } from 'firebase/auth'
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -20,5 +20,11 @@ export const db = getFirestore(app)
 export const auth = getAuth()
 export const provider = new GoogleAuthProvider()
 provider.setCustomParameters({ prompt: 'select_account' })
+
+connectAuthEmulator(auth, 'http://localhost:9099')
+
+if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+  connectFirestoreEmulator(db, 'localhost', 8080)
+}
 
 export default firebase
