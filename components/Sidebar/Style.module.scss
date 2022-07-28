@@ -1,0 +1,111 @@
+@import '../../styles/variables.scss';
+
+.sidebar {
+  width: 100%;
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  min-height: 100%;
+  height: 100vh;
+  .wrapper {
+    overflow: hidden;
+    position: relative;
+    height: 100%;
+    border-right: 1px solid $border-color;
+    .header {
+      padding: 10px 16px;
+      border-bottom: 1px solid $border-color;
+      .headerWrapper {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        .logo {
+          display: flex;
+          align-items: center;
+          flex: 1 1;
+          overflow: hidden;
+          img {
+            border-radius: 999px;
+            cursor: pointer;
+          }
+        }
+        .title {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex: 1 2;
+          text-align: center;
+          padding: 0 10px;
+        }
+        .action {
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          flex: 1 1;
+          button {
+            background-color: $border-color;
+            border-radius: 9999px;
+            width: 36px;
+            height: 36px;
+            i {
+              font-size: 1.25rem;
+              line-height: 1.75rem;
+            }
+          }
+        }
+      }
+    }
+  }
+  @media (min-width: 768px) {
+    width: 360px;
+  }
+}
+
+.userDropdown {
+  position: relative;
+  display: flex;
+  flex: 1 1;
+  .menuAccount {
+    right: 0px;
+    padding: 16px;
+    position: absolute;
+    border-radius: 16px;
+    top: calc(100% + 10px);
+    background-color: $secondary-color;
+    width: 200px;
+    box-shadow: 0px 24px 60px rgba(black, 0.04), 0px 8px 20px rgba(black, 0.04);
+    & > .item {
+      & > .link {
+        display: flex;
+        align-items: center;
+        .icon {
+          margin-right: 16px;
+          color: $text-color;
+        }
+        .text {
+          color: $text-color;
+        }
+      }
+    }
+
+    &::before {
+      margin-left: -9px;
+      bottom: 100%;
+      right: 0;
+      content: '';
+      height: 0px;
+      width: 0px;
+      position: absolute;
+    }
+    &::after {
+      content: '';
+      background: transparent;
+      height: 20px;
+      width: 150px;
+      top: -20px;
+      left: calc(50% - 65px);
+      position: absolute;
+      display: inline-block;
+    }
+  }
+}
