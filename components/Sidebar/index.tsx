@@ -7,16 +7,17 @@ import Image from 'next/image'
 import { MouseEvent, useContext, useState } from 'react'
 import { DEFAULT_AVATAR, IMAGE_PROXY } from 'shared/constants'
 import style from './Style.module.scss'
+import CreateConvention from '@Components/CreateConvention'
 
 const Sidebar = () => {
   const { user } = useContext(AuthContext)
   const [open, setOpen] = useState<boolean>(false)
+  const [openModal, setOpenModal] = useState<boolean>(false)
 
   const handleClick = (event: MouseEvent<HTMLDivElement>) => {
     event.preventDefault()
     setOpen(!open)
   }
-  console.log(user)
 
   return (
     <div className={style.sidebar}>
@@ -59,7 +60,10 @@ const Sidebar = () => {
               <h1>Chat</h1>
             </div>
             <div className={style.action}>
-              <button className={style.btnCreate}>
+              <button
+                className={style.btnCreate}
+                onClick={() => setOpenModal(!openModal)}
+              >
                 <i className="bx bxs-edit"></i>
               </button>
             </div>
@@ -68,6 +72,9 @@ const Sidebar = () => {
 
         <div className={style.content}></div>
       </div>
+      {openModal && (
+        <CreateConvention open={openModal} setOpenModal={setOpenModal} />
+      )}
     </div>
   )
 }
