@@ -1,51 +1,44 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-  CollectionReference,
-  DocumentData,
-  Query,
-  QuerySnapshot,
   onSnapshot,
+  DocumentData,
+  CollectionReference,
+  Query,
 } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 
-const cache: { [key: string]: any } = {}
-
-export const useFireStore: (
-  key: string,
-  collection: CollectionReference | Query<DocumentData>
-) => { loading: boolean; error: boolean; data: QuerySnapshot | null } = (
-  key,
-  collection
+const useFireStore = (
+  collectionName: string,
+  query: CollectionReference | Query<DocumentData>
 ) => {
-  const [data, setData] = useState<QuerySnapshot<DocumentData> | null>(
-    cache[key] || null
-  )
-
+  const [data, setData] = useState<DocumentData[]>([])
   const [loading, setLoading] = useState(!data)
   const [error, setError] = useState(false)
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
-      collection,
-      (snapshot) => {
-        setData(snapshot)
+      query,
+      (querySnapshot) => {
+        const data: DocumentData[] = []
+        querySnapshot.forEach((doc) => {
+          data.push({ ...doc.data(), id: doc.id })
+        })
+        setData(data)
         setLoading(false)
         setError(false)
-        cache[key] = snapshot
       },
       () => {
-        setData(null)
+        setData([])
         setLoading(false)
         setError(true)
       }
     )
-
     return () => {
       unsubscribe()
     }
-
-    // eslint-disable-next-line
-  }, [key])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [collectionName])
 
   return { loading, error, data }
 }
+
+export default useFireStore

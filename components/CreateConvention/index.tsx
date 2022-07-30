@@ -5,17 +5,19 @@ import {
   addDoc,
   collection,
   getDocs,
+  orderBy,
   query,
   serverTimestamp,
   where,
 } from 'firebase/firestore'
 import Image from 'next/image'
-import { FC, useContext, useState } from 'react'
+import { FC, useContext, useMemo, useState } from 'react'
 import { DEFAULT_AVATAR, IMAGE_PROXY, THEMES } from 'shared/constants'
 import style from './Style.module.scss'
-import { useFireStore } from 'hooks/useFirestore'
 import Loading from '@Components/Loading'
 import Error from '@Components/Error'
+import { AppContext } from 'context/AppProvider'
+import useFireStore from 'hooks/useFireStore'
 
 interface CreateConventionProps {
   open: boolean
@@ -26,14 +28,24 @@ const CreateConvention: FC<CreateConventionProps> = ({
   open,
   setOpenModal,
 }) => {
-  const { data, error, loading } = useFireStore(
-    'all-users',
-    collection(db, 'users')
-  )
+  const search = ''
+  const queryUser = useMemo(() => {
+    if (!search) {
+      return query(collection(db, 'users'), orderBy('displayName'))
+    }
+    return query(
+      collection(db, 'users'),
+      orderBy('displayName'),
+      where('keywords', 'array-contains', search)
+    )
+  }, [search])
+
+  const { data, error, loading } = useFireStore('users', queryUser)
 
   const [selected, setSelected] = useState<string[]>([])
   const [isCreating, setIsCreating] = useState(false)
   const { user } = useContext(AuthContext)
+  const { setSelectedId } = useContext(AppContext)
 
   const handleToggle = (uid: string) => {
     if (selected.includes(uid)) {
@@ -47,8 +59,6 @@ const CreateConvention: FC<CreateConventionProps> = ({
     setIsCreating(true)
 
     const sorted = [...selected, user?.uid].sort()
-
-    console.log(sorted)
 
     const q = query(
       collection(db, 'conversations'),
@@ -77,19 +87,14 @@ const CreateConvention: FC<CreateConventionProps> = ({
 
       setOpenModal(false)
 
-      console.log(created)
-
-      // navigate(`/${created.id}`)
+      setSelectedId(created.id)
     } else {
       setOpenModal(false)
-
-      // navigate(`/${querySnapshot.docs[0].id}`)
+      setSelectedId(querySnapshot.docs[0].id)
 
       setIsCreating(false)
     }
   }
-
-  data?.docs.map((doc) => console.log('!23', doc.data()))
 
   const Footer = (
     <div className={style.footer}>
@@ -118,28 +123,28 @@ const CreateConvention: FC<CreateConventionProps> = ({
         <>
           {isCreating && <Loading />}
           <div className={style.contentPopup}>
-            {data?.docs
-              .filter((doc) => doc.data()?.uid !== user.uid)
+            {data
+              ?.filter((doc) => doc.uid !== user.uid)
               .map((item) => (
                 <div
                   className={style.listConvention}
-                  onClick={() => handleToggle(item.data().uid)}
-                  key={item.data().uid}
+                  onClick={() => handleToggle(item.uid)}
+                  key={item.uid}
                 >
                   <input
                     type="checkbox"
-                    checked={selected.includes(item.data().uid)}
+                    checked={selected.includes(item.uid)}
                     readOnly
                   />
 
                   <Image
-                    src={IMAGE_PROXY(item.data().photoUrl) || DEFAULT_AVATAR}
+                    src={IMAGE_PROXY(item.photoUrl) || DEFAULT_AVATAR}
                     alt=""
                     width={32}
                     height={32}
                     objectFit="cover"
                   />
-                  <p>{item.data().displayName}</p>
+                  <p>{item.displayName}</p>
                 </div>
               ))}
           </div>

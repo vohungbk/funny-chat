@@ -1,13 +1,33 @@
-import { createContext, FC, ReactNode } from 'react'
+import { createContext, FC, ReactNode, useState } from 'react'
 
-const initAppContextState = {}
+interface initAppContextState {
+  setSelectedId: (id: string) => void
+  selectedId: string
+  clearState: () => void
+}
 
-export const AppContext = createContext(initAppContextState)
+const initAppContext: initAppContextState = {
+  setSelectedId: () => null,
+  selectedId: '',
+  clearState: () => null,
+}
+
+export const AppContext = createContext(initAppContext)
 
 interface AppProviderProps {
   children: ReactNode
 }
 
 export const AppProvider: FC<AppProviderProps> = ({ children }) => {
-  return <AppContext.Provider value={{}}>{children}</AppContext.Provider>
+  const [selectedId, setSelectedId] = useState('')
+
+  const clearState = () => {
+    setSelectedId('')
+  }
+
+  return (
+    <AppContext.Provider value={{ selectedId, setSelectedId, clearState }}>
+      {children}
+    </AppContext.Provider>
+  )
 }

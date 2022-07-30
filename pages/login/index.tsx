@@ -17,6 +17,7 @@ import AuthWrapper from '@Components/Auth/AuthWrapper'
 import { toast } from 'react-toastify'
 import Link from 'next/link'
 import { addDocument } from '../../firebase/service'
+import { generateKeywords } from 'shared/utils'
 
 const fbProvider = new FacebookAuthProvider()
 const ggProvider = new GoogleAuthProvider()
@@ -35,6 +36,7 @@ const Login: FC = () => {
         photoUrl: user.photoURL as string,
         uid: user.uid as string,
         providerId: user.providerId as string,
+        keywords: generateKeywords(user.displayName as string),
       })
     }
   }
@@ -52,6 +54,7 @@ const Login: FC = () => {
             photoUrl: user.photoURL as string,
             uid: user.uid as string,
             providerId: user.providerId as string,
+            keywords: generateKeywords(user.displayName as string),
           })
         }
       })
@@ -105,7 +108,7 @@ const Login: FC = () => {
           </div>
 
           <div className={style.forget}>
-            <a href="/en-us/reset-password/">Forgot password?</a>
+            <Link href="/en-us/reset-password/">Forgot password?</Link>
           </div>
           <button
             onClick={handleLogin}

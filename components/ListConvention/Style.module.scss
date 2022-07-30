@@ -1,0 +1,123 @@
+@import '../../styles/variables.scss';
+
+.loading {
+  display: flex;
+  align-items: stretch;
+  gap: 0.5rem;
+
+  padding: 0.5rem 1.25rem;
+  .content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+}
+
+.loadingFull {
+  height: 3.5rem;
+  width: 3.5rem;
+  flex-shrink: 0;
+  border-radius: 9999px;
+}
+
+.loadingHaft {
+  flex-grow: 1;
+  width: 50%;
+}
+.loadingThree {
+  flex-grow: 1;
+  width: 66.666667%;
+}
+
+.conventions {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  gap: 0.5rem;
+
+  padding: 0.5rem 1.25rem;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter,
+    backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+  &:hover {
+    background-color: $dark-lighten-color;
+  }
+  &.active {
+    background-color: rgb(37 47 60);
+  }
+  .messages {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-grow: 1;
+    gap: 0.25rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    .text {
+      max-width: 240px;
+      flex-grow: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .message {
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+      color: rgb(156 163 175);
+    }
+  }
+  .unread {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 9999px;
+    transform: translate(-50%, -50%),
+      rotate(0) skewX(0) skewY(0) scaleX(1) scaleY(1);
+    background-color: #0d90f3;
+  }
+}
+.group {
+  img {
+    border-radius: 9999px;
+    flex-shrink: 0;
+  }
+  &:hover {
+    .groupAvatar {
+      &:nth-child(2) {
+        border-color: $dark-lighten-color;
+      }
+    }
+  }
+  .groupAvatar {
+    position: relative;
+    height: 56px;
+    width: 56px;
+    &:nth-child(1) {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+    &:nth-child(2) {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      z-index: 1;
+      transition-property: color, background-color, border-color,
+        text-decoration-color, fill, stroke, opacity, box-shadow, transform,
+        filter, backdrop-filter;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 300ms;
+      border-width: 3px;
+      border-color: $dark;
+    }
+  }
+}

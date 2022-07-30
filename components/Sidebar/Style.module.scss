@@ -109,3 +109,18 @@
     }
   }
 }
+
+.createNew {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-self: center;
+  margin: 1.5rem 0;
+  p {
+    text-align: center;
+  }
+  button {
+    text-align: center;
+    color: #0d90f3;
+  }
+}

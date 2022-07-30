@@ -1,5 +1,5 @@
 import { db } from './config'
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
+import { serverTimestamp, setDoc, doc } from 'firebase/firestore'
 
 type Data = {
   displayName: string
@@ -7,16 +7,12 @@ type Data = {
   photoUrl: string
   uid: string
   providerId: string
+  keywords: string[]
 }
 
 export const addDocument = (collectionName: string, data: Data) => {
-  const dbRef = collection(db, collectionName)
-
-  addDoc(dbRef, { ...data, creteAt: serverTimestamp() })
-    .then(() => {
-      console.log('Document has been added successfully')
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+  setDoc(doc(db, collectionName, data.uid), {
+    ...data,
+    creteAt: serverTimestamp(),
+  })
 }
